@@ -29,5 +29,6 @@ public class PacienteResponse
 
     [JsonProperty("observacoes")]
     public string Observacoes { get; set; }
+
 }
 

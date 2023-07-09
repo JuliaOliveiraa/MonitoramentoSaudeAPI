@@ -4,8 +4,6 @@ namespace MonitoramentoSaudeAPI.Models;
 
 public class LeituraMonitoramentoRequest
 {
-    public int Id { get; set; }
-
     [JsonProperty("dataHora")]
     public DateTime DataHora { get; set; }
 

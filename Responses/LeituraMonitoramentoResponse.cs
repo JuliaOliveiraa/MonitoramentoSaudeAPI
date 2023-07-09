@@ -2,32 +2,36 @@ using Newtonsoft.Json;
 
 namespace MonitoramentoSaudeAPI.Models;
 
-public class LeituraMonitoramentoResponse
+public class ListaLeituraMonitoramentoResponse
 {
-    public int Id { get; set; }
-
-    [JsonProperty("dataHora")]
-    public DateTime DataHora { get; set; }
-
-    [JsonProperty("pressaoArterial")]
-    public string PressaoArterial { get; set; }
-
-    [JsonProperty("batimentosCardiacos")]
-    public int BatimentosCardiacos { get; set; }
-
-    [JsonProperty("frequenciaRespiratoria")]
-    public int FrequenciaRespiratoria { get; set; }
-
-    [JsonProperty("saturacaoOxigenio")]
-    public int SaturacaoOxigenio { get; set; }
-
-    [JsonProperty("nivelCO2")]
-    public int NivelCO2 { get; set; }
-
-    [JsonProperty("temperatura")]
-    public decimal Temperatura { get; set; }
-
-    [JsonProperty("pacienteCpf")]
+    [JsonProperty("Cpf-Paciente")]
     public string PacienteCpf { get; set; }
+
+    [JsonProperty("Monitoriamento")]
+    public List<LeituraMonitoramentoResponse> LeiturasMonitoramento { get; set; }
 }
 
+public class LeituraMonitoramentoResponse
+{
+    [JsonProperty("Data-Hora")]
+    public DateTime DataHora { get; set; }
+
+    [JsonProperty("Pressao-Arterial")]
+    public string PressaoArterial { get; set; }
+
+    [JsonProperty("Batimentos-Cardiacos")]
+    public int BatimentosCardiacos { get; set; }
+
+    [JsonProperty("Frequencia-Respiratoria")]
+    public int FrequenciaRespiratoria { get; set; }
+
+    [JsonProperty("Saturacao-Oxigenio")]
+    public int SaturacaoOxigenio { get; set; }
+
+    [JsonProperty("Nivel-CO2")]
+    public int NivelCO2 { get; set; }
+
+    [JsonProperty("Temperatura")]
+    public decimal Temperatura { get; set; }
+
+}
