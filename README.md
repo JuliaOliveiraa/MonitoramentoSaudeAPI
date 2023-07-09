@@ -30,18 +30,16 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
 3. Abra o terminal de comando ou o Package Manager Console no Visual Studio.
 4. Navegue até o diretório raiz do seu projeto, onde está localizado o arquivo `Startup.cs`.
 5. Execute o seguinte comando para criar as migrações:
-
-```bash
-dotnet ef migrations add NomeDaMigration
-```
-
-Certifique-se de substituir NomeDaMigration pelo nome que você deseja dar à migração. Por exemplo, você pode usar InitialCreate como nome para a primeira migração.
-
-Execute o seguinte comando para aplicar as migrações e criar as tabelas no banco de dados:
-```bash
-dotnet ef database update
-```
-Isso executará as migrações pendentes e aplicará as alterações no banco de dados.
+  ```bash
+  dotnet ef migrations add NomeDaMigration
+  ```
+  Certifique-se de substituir NomeDaMigration pelo nome que você deseja dar à migração. Por exemplo, você pode usar InitialCreate como nome para a primeira migração.
+  
+  Execute o seguinte comando para aplicar as migrações e criar as tabelas no banco de dados:
+  ```bash
+  dotnet ef database update
+  ```
+  Isso executará as migrações pendentes e aplicará as alterações no banco de dados.
 
 6. Execute a API localmente.
 8. Utilize ferramentas como Postman, cURL ou o Swagger para fazer requisições HTTP para os endpoints da API.
