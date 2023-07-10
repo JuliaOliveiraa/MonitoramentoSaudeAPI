@@ -6,6 +6,7 @@ using System.Text.Json;
 using CsvHelper;
 using System.Globalization;
 using MonitoramentoSaudeAPI.Requests;
+using MonitoramentoSaudeAPI.Responses;
 using Newtonsoft.Json;
 
 namespace MonitoramentoSaudeAPI.Controllers
@@ -21,6 +22,34 @@ namespace MonitoramentoSaudeAPI.Controllers
         {
             _context = context;
         }
+
+        [HttpGet("paciente/{cpf}/contatos-emergencia")]
+        public async Task<ActionResult<ContatosEmergenciaResponse>> GetContatosEmergencia(string cpf)
+        {
+            var paciente = await _context.Pacientes.Include(p => p.ContatosEmergencia)
+                .FirstOrDefaultAsync(p => p.Cpf == cpf);
+
+            if (paciente == null)
+            {
+                return NotFound("Paciente não encontrado!");
+            }
+
+            var response = new ContatosEmergenciaResponse
+            {
+                Cpf = paciente.Cpf,
+                ContatosEmergencia = paciente.ContatosEmergencia.Select(contato => new ContatoEmergenciaResponse
+                {
+                    CpfContato = contato.CpfContato,
+                    Nome = contato.Nome,
+                    Telefone = contato.Telefone,
+                    Endereco = contato.Endereco,
+                    GrauParentesco = contato.GrauParentesco
+                }).ToList()
+            };
+
+            return Ok(response);
+        }
+
 
         [HttpPut("paciente/{cpfPaciente}/contato/{cpfContato}")]
         public async Task<ActionResult> UpdateContatoEmergencia(string cpfPaciente, string cpfContato, [FromBody] ContatoEmergenciaRequest request)
