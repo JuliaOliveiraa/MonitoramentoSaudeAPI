@@ -12,6 +12,8 @@ public class Paciente
     public string MedicamentosEmUso { get; set; }
     public string Alergias { get; set; }
     public string Observacoes { get; set; }
+
+    public List<ContatoEmergencia> ContatosEmergencia { get; set; }
     public ICollection<LeituraMonitoramento> LeiturasMonitoramento { get; set; }
 }
 

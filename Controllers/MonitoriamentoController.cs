@@ -137,6 +137,7 @@ namespace MonitoramentoSaudeAPI.Controllers
 
             try
             {
+                int countIntens;
                 using (var reader = new StreamReader(pathCsv))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
@@ -156,9 +157,10 @@ namespace MonitoramentoSaudeAPI.Controllers
 
                     _context.LeiturasMonitoramento.AddRange(leituras);
                     await _context.SaveChangesAsync();
+                    countIntens = leituras.Count;
                 }
 
-                return Ok("Dados de monitoramento adicionados com sucesso!");
+                return Ok($"{countIntens} dados de monitoramento adicionados com sucesso!");
             }
             catch (Exception ex)
             {

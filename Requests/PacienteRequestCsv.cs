@@ -2,7 +2,7 @@ using MonitoramentoSaudeAPI.Requests;
 using Newtonsoft.Json;
 
 namespace MonitoramentoSaudeAPI.Models;
-public class PacienteResponse
+public class PacienteRequestCsv
 {
     [JsonProperty("cpf")]
     public string Cpf { get; set; }
@@ -32,6 +32,6 @@ public class PacienteResponse
     public string Observacoes { get; set; }
 
     [JsonProperty("contatosEmergencia")]
-    public List<ContatoEmergenciaRequest> ContatosEmergencia { get; set; }
+    public string ContatosEmergencia { get; set; }
 }
 

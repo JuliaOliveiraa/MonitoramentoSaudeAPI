@@ -31,6 +31,28 @@ namespace MonitoramentoSaudeAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContatosEmergencia",
+                columns: table => new
+                {
+                    CpfContato = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PacienteCpf = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GrauParentesco = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContatosEmergencia", x => new { x.CpfContato, x.PacienteCpf });
+                    table.ForeignKey(
+                        name: "FK_ContatosEmergencia_Pacientes_PacienteCpf",
+                        column: x => x.PacienteCpf,
+                        principalTable: "Pacientes",
+                        principalColumn: "Cpf",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LeiturasMonitoramento",
                 columns: table => new
                 {
@@ -57,6 +79,11 @@ namespace MonitoramentoSaudeAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_ContatosEmergencia_PacienteCpf",
+                table: "ContatosEmergencia",
+                column: "PacienteCpf");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LeiturasMonitoramento_PacienteCpf",
                 table: "LeiturasMonitoramento",
                 column: "PacienteCpf");
@@ -65,6 +92,9 @@ namespace MonitoramentoSaudeAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ContatosEmergencia");
+
             migrationBuilder.DropTable(
                 name: "LeiturasMonitoramento");
 

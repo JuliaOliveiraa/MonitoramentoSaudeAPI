@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using MonitoramentoSaudeAPI.Models;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using CsvHelper;
+using System.Globalization;
+using MonitoramentoSaudeAPI.Requests;
+using Newtonsoft.Json;
 
 namespace MonitoramentoSaudeAPI.Controllers
 {
@@ -32,6 +36,18 @@ namespace MonitoramentoSaudeAPI.Controllers
             var response = new List<PacienteResponse>();
             foreach (var paciente in pacientes)
             {
+                var contatosEmergencia = await _context.ContatosEmergencia
+                    .Where(c => c.PacienteCpf == paciente.Cpf)
+                    .Select(c => new ContatoEmergenciaRequest
+                    {
+                        Nome = c.Nome,
+                        Telefone = c.Telefone,
+                        GrauParentesco = c.GrauParentesco,
+                        CpfContato = c.CpfContato,
+                        Endereco = c.Endereco
+                    })
+                    .ToListAsync();
+
                 var p = new PacienteResponse()
                 {
                     Cpf = paciente.Cpf,
@@ -42,7 +58,8 @@ namespace MonitoramentoSaudeAPI.Controllers
                     Alergias = paciente.Alergias,
                     HistoricoMedico = paciente.HistoricoMedico,
                     MedicamentosEmUso = paciente.MedicamentosEmUso,
-                    Observacoes = paciente.Observacoes
+                    Observacoes = paciente.Observacoes,
+                    ContatosEmergencia = contatosEmergencia,
                 };
                 response.Add(p);
             }
@@ -53,11 +70,21 @@ namespace MonitoramentoSaudeAPI.Controllers
         [HttpGet("paciente/{cpf}")]
         public async Task<ActionResult<PacienteResponse>> GetPaciente(string cpf)
         {
-            var paciente = _context.Pacientes.Where(p => p.Cpf == cpf).FirstOrDefault();
+            var paciente = await _context.Pacientes.Include(p => p.ContatosEmergencia).FirstOrDefaultAsync(p => p.Cpf == cpf);
             if (paciente == null)
             {
                 return NotFound("Paciente não cadastrado!");
             }
+
+            var contatosEmergencia = paciente.ContatosEmergencia
+                .Select(c => new ContatoEmergenciaRequest
+                {
+                    Nome = c.Nome,
+                    Telefone = c.Telefone,
+                    GrauParentesco = c.GrauParentesco,
+                    CpfContato = c.CpfContato,
+                    Endereco = c.Endereco
+                }).ToList();
 
             var viewModel = new PacienteResponse()
             {
@@ -69,7 +96,8 @@ namespace MonitoramentoSaudeAPI.Controllers
                 Alergias = paciente.Alergias,
                 HistoricoMedico = paciente.HistoricoMedico,
                 MedicamentosEmUso = paciente.MedicamentosEmUso,
-                Observacoes = paciente.Observacoes
+                Observacoes = paciente.Observacoes,
+                ContatosEmergencia = contatosEmergencia
             };
 
             return Ok(viewModel);
@@ -95,7 +123,15 @@ namespace MonitoramentoSaudeAPI.Controllers
                 Alergias = inputModel.Alergias,
                 HistoricoMedico = inputModel.HistoricoMedico,
                 MedicamentosEmUso = inputModel.MedicamentosEmUso,
-                Observacoes = inputModel.Observacoes
+                Observacoes = inputModel.Observacoes,
+                ContatosEmergencia = inputModel.ContatosEmergencia.Select(c => new ContatoEmergencia
+                {
+                    Nome = c.Nome,
+                    Telefone = c.Telefone,
+                    GrauParentesco = c.GrauParentesco,
+                    CpfContato = c.CpfContato,
+                    Endereco = c.Endereco
+                }).ToList()
             };
 
             _context.Pacientes.Add(paciente);
@@ -111,7 +147,8 @@ namespace MonitoramentoSaudeAPI.Controllers
                 Alergias = paciente.Alergias,
                 HistoricoMedico = paciente.HistoricoMedico,
                 MedicamentosEmUso = paciente.MedicamentosEmUso,
-                Observacoes = paciente.Observacoes
+                Observacoes = paciente.Observacoes,
+                ContatosEmergencia = inputModel.ContatosEmergencia
             };
 
             return Created("paciente/{cpf}", viewModel);
@@ -155,11 +192,11 @@ namespace MonitoramentoSaudeAPI.Controllers
             return Ok(viewModel);
         }
 
-
         [HttpDelete("paciente/{cpf}")]
         public async Task<ActionResult> DeletePaciente(string cpf)
         {
             var paciente = await _context.Pacientes.Include(p => p.LeiturasMonitoramento)
+                .Include(p => p.ContatosEmergencia)
                 .FirstOrDefaultAsync(p => p.Cpf == cpf);
 
             if (paciente == null)
@@ -171,6 +208,86 @@ namespace MonitoramentoSaudeAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost("pacientes/batch")]
+        public async Task<ActionResult> CreatePacientesBatch(string pathCsv)
+        {
+            try
+            {
+                if (!System.IO.File.Exists(pathCsv))
+                {
+                    return BadRequest("Arquivo CSV não encontrado.");
+                }
+
+                using (var reader = new StreamReader(pathCsv))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    var records = csv.GetRecords<PacienteRequestCsv>(); // Mapeia as linhas do CSV para objetos de PacienteRequest
+
+                    int pacientesCadastrados = 0;
+                    int pacienteAtualizados = 0;
+
+
+                    foreach (var pacienteRequest in records)
+                    {
+                        var pacienteExistente = await _context.Pacientes.FirstOrDefaultAsync(p => p.Cpf == pacienteRequest.Cpf);
+
+                        if (pacienteExistente != null)
+                        {
+                            // Atualiza os dados do paciente existente com os dados do novo registro
+                            pacienteExistente.Nome = pacienteRequest.Nome;
+                            pacienteExistente.DataNascimento = pacienteRequest.DataNascimento;
+                            pacienteExistente.Endereco = pacienteRequest.Endereco;
+                            pacienteExistente.Telefone = pacienteRequest.Telefone;
+                            pacienteExistente.Alergias = pacienteRequest.Alergias;
+                            pacienteExistente.HistoricoMedico = pacienteRequest.HistoricoMedico;
+                            pacienteExistente.MedicamentosEmUso = pacienteRequest.MedicamentosEmUso;
+                            pacienteExistente.Observacoes = pacienteRequest.Observacoes;
+
+                            // Deserializa o JSON dos contatos de emergência
+                            var contatosEmergencia = JsonConvert
+                                .DeserializeObject<List<ContatoEmergencia>>(pacienteRequest.ContatosEmergencia);
+                            pacienteExistente.ContatosEmergencia = contatosEmergencia;
+
+                            _context.Pacientes.Update(pacienteExistente);
+                            pacienteAtualizados++;
+                        }
+                        else
+                        {
+                            var paciente = new Paciente
+                            {
+                                Cpf = pacienteRequest.Cpf,
+                                Nome = pacienteRequest.Nome,
+                                DataNascimento = pacienteRequest.DataNascimento,
+                                Endereco = pacienteRequest.Endereco,
+                                Telefone = pacienteRequest.Telefone,
+                                Alergias = pacienteRequest.Alergias,
+                                HistoricoMedico = pacienteRequest.HistoricoMedico,
+                                MedicamentosEmUso = pacienteRequest.MedicamentosEmUso,
+                                Observacoes = pacienteRequest.Observacoes
+                            };
+
+                            // Deserializa o JSON dos contatos de emergência
+                            var contatosEmergencia = JsonConvert
+                                .DeserializeObject<List<ContatoEmergencia>>(pacienteRequest.ContatosEmergencia);
+                            paciente.ContatosEmergencia = contatosEmergencia;
+
+                            _context.Pacientes.Add(paciente);
+                            pacientesCadastrados++;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    return Ok($"{pacientesCadastrados} pacientes cadastrados com sucesso!\n" +
+                              $"{pacienteAtualizados} pacientes atualizados com sucesso!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao cadastrar pacientes em massa a partir do arquivo CSV: {ex.Message}");
+            }
         }
 
     }

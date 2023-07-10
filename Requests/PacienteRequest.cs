@@ -1,3 +1,4 @@
+using MonitoramentoSaudeAPI.Requests;
 using Newtonsoft.Json;
 
 namespace MonitoramentoSaudeAPI.Models;
@@ -29,5 +30,8 @@ public class PacienteRequest
 
     [JsonProperty("observacoes")]
     public string Observacoes { get; set; }
+
+    [JsonProperty("contatosEmergencia")]
+    public List<ContatoEmergenciaRequest> ContatosEmergencia { get; set; }
 }
 

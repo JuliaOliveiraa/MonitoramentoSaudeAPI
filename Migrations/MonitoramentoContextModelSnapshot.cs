@@ -22,6 +22,37 @@ namespace MonitoramentoSaudeAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MonitoramentoSaudeAPI.Models.ContatoEmergencia", b =>
+                {
+                    b.Property<string>("CpfContato")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PacienteCpf")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GrauParentesco")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CpfContato", "PacienteCpf");
+
+                    b.HasIndex("PacienteCpf");
+
+                    b.ToTable("ContatosEmergencia");
+                });
+
             modelBuilder.Entity("MonitoramentoSaudeAPI.Models.LeituraMonitoramento", b =>
                 {
                     b.Property<int>("Id")
@@ -104,6 +135,17 @@ namespace MonitoramentoSaudeAPI.Migrations
                     b.ToTable("Pacientes");
                 });
 
+            modelBuilder.Entity("MonitoramentoSaudeAPI.Models.ContatoEmergencia", b =>
+                {
+                    b.HasOne("MonitoramentoSaudeAPI.Models.Paciente", "Paciente")
+                        .WithMany("ContatosEmergencia")
+                        .HasForeignKey("PacienteCpf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Paciente");
+                });
+
             modelBuilder.Entity("MonitoramentoSaudeAPI.Models.LeituraMonitoramento", b =>
                 {
                     b.HasOne("MonitoramentoSaudeAPI.Models.Paciente", "Paciente")
@@ -117,6 +159,8 @@ namespace MonitoramentoSaudeAPI.Migrations
 
             modelBuilder.Entity("MonitoramentoSaudeAPI.Models.Paciente", b =>
                 {
+                    b.Navigation("ContatosEmergencia");
+
                     b.Navigation("LeiturasMonitoramento");
                 });
 #pragma warning restore 612, 618
