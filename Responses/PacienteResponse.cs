@@ -29,9 +29,9 @@ public class PacienteResponse
     public string Alergias { get; set; }
 
     [JsonProperty("observacoes")]
-    public string Observacoes { get; set; }
+    public string? Observacoes { get; set; }
 
     [JsonProperty("contatosEmergencia")]
-    public List<ContatoEmergenciaRequest> ContatosEmergencia { get; set; }
+    public List<ContatoEmergenciaRequest>? ContatosEmergencia { get; set; }
 }
 

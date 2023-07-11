@@ -32,6 +32,6 @@ public class PacienteRequestCsv
     public string Observacoes { get; set; }
 
     [JsonProperty("contatosEmergencia")]
-    public string ContatosEmergencia { get; set; }
+    public string? ContatosEmergencia { get; set; }
 }
 
