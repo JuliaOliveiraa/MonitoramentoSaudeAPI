@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
+using MonitoramentoSaudeAPI.Services;
 
 namespace MonitoramentoSaudeAPI
 {
@@ -18,17 +14,18 @@ namespace MonitoramentoSaudeAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Configuração do banco de dados
             services.AddDbContext<MonitoramentoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            // Configuração dos controladores da API
-            services.AddControllers();
+            services.AddMvc();
 
-            // Configuração da documentação da API (opcional)
+            services.AddScoped<IPacienteService, PacienteService>();
+            services.AddScoped<IMonitoriamentoService, MonitoriamentoService>();
+            services.AddScoped<IContatoEmergenciaService, ContatoEmergenciaService>();
+
+            services.AddControllers();
             services.AddSwaggerGen();
 
-            // Adicionar outros serviços necessários
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -46,14 +43,9 @@ namespace MonitoramentoSaudeAPI
                 // app.UseExceptionHandler("/Error");
                 // app.UseHsts();
             }
-
-            // Configuração do middleware para roteamento
+            
             app.UseRouting();
-
-            // Configuração do middleware para autorização (opcional)
-            // app.UseAuthorization();
-
-            // Configuração do middleware para endpoints da API
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

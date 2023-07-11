@@ -15,42 +15,42 @@ namespace MonitoramentoSaudeAPI.Controllers
             _pacienteService = pacienteService;
         }
 
-        [HttpGet("pacientes")]
+        [HttpGet("lista-completa")]
         public async Task<ActionResult<IEnumerable<PacienteResponse>>> GetListaPacientes()
         {
             var response = await _pacienteService.GetListaPacientesAsync();
             return Ok(response);
         }
 
-        [HttpGet("paciente/{cpf}")]
+        [HttpGet("{cpf}")]
         public async Task<ActionResult<PacienteResponse>> GetPaciente(string cpf)
         {
             var response = await _pacienteService.GetPacienteAsync(cpf);
             return Ok(response);
         }
 
-        [HttpPost("pacientes")]
+        [HttpPost("novo-paciente")]
         public async Task<ActionResult<PacienteResponse>> CreatePaciente([FromBody] PacienteRequest inputModel)
         {
             var response = await _pacienteService.CreatePacienteAsync(inputModel);
             return Created($"paciente/{response.Cpf}", response);
         }
 
-        [HttpPut("paciente/{cpf}")]
+        [HttpPut("atualizar-paciente/{cpf}")]
         public async Task<ActionResult<PacienteResponse>> UpdatePaciente(string cpf, [FromBody] PacienteRequest inputModel)
         {
             var response = await _pacienteService.UpdatePacienteAsync(cpf, inputModel);
             return Ok(response);
         }
 
-        [HttpDelete("paciente/{cpf}")]
+        [HttpDelete("/excluir-paciente/{cpf}")]
         public async Task<ActionResult> DeletePaciente(string cpf)
         {
             await _pacienteService.DeletePacienteAsync(cpf);
             return NoContent();
         }
 
-        [HttpPost("pacientes/batch")]
+        [HttpPost("/adicionar-lote")]
         public async Task<ActionResult> CreatePacientesBatch(string pathCsv)
         {
             var response = await _pacienteService.CreatePacientesBatchAsync(pathCsv);

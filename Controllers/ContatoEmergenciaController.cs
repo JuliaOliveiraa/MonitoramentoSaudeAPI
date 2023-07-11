@@ -20,32 +20,32 @@ namespace MonitoramentoSaudeAPI.Controllers
             _contatoEmergenciaService = contatoEmergenciaService;
         }
 
-        [HttpGet("paciente/{cpf}/contatos-emergencia")]
+        [HttpGet("{cpf}")]
         public async Task<ActionResult<ContatosEmergenciaResponse>> GetContatosEmergencia(string cpf)
         {
             var response = await _contatoEmergenciaService.GetContatosEmergenciaAsync(cpf);
             return Ok(response);
         }
 
-        [HttpPut("paciente/{cpfPaciente}/contato/{cpfContato}")]
+        [HttpPut("atualizar-contato/{cpfPaciente}/{cpfContato}")]
         public async Task<ActionResult> UpdateContatoEmergencia(string cpfPaciente, string cpfContato, [FromBody] ContatoEmergenciaRequest request)
         {
             await _contatoEmergenciaService.UpdateContatoEmergenciaAsync(cpfPaciente, cpfContato, request);
             return NoContent();
         }
 
-        [HttpDelete("paciente/{cpfPaciente}/contato/{cpfContato}")]
+        [HttpDelete("deletar-contato/{cpfPaciente}/{cpfContato}")]
         public async Task<ActionResult> DeleteContatoEmergencia(string cpfPaciente, string cpfContato)
         {
             await _contatoEmergenciaService.DeleteContatoEmergenciaAsync(cpfPaciente, cpfContato);
             return NoContent();
         }
 
-        [HttpPost("paciente/{cpfPaciente}/contato")]
+        [HttpPost("adicionar-contato/{cpfPaciente}")]
         public async Task<ActionResult> AddContatoEmergencia(string cpfPaciente, [FromBody] ContatoEmergenciaRequest request)
         {
             var response = await _contatoEmergenciaService.AddContatoEmergenciaAsync(cpfPaciente, request);
-            return Created($"paciente/{cpfPaciente}", response);
+            return Created($"{cpfPaciente}", response);
         }
     }
 }

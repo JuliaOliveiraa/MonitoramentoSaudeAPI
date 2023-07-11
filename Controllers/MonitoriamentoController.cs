@@ -1,9 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MonitoramentoSaudeAPI.Models;
-using CsvHelper;
 using MonitoramentoSaudeAPI.Services;
 
 namespace MonitoramentoSaudeAPI.Controllers
@@ -19,28 +15,28 @@ namespace MonitoramentoSaudeAPI.Controllers
             _monitoriamentoService = monitoriamentoService;
         }
 
-        [HttpGet("monitoriamento/{cpf}")]
+        [HttpGet("{cpf}")]
         public async Task<ActionResult<ListaLeituraMonitoramentoResponse>> GetLeiturasMonitoramento(string cpf)
         {
             var response = await _monitoriamentoService.GetLeiturasMonitoramentoAsync(cpf);
             return Ok(response);
         }
 
-        [HttpPost("monitoriamento/{cpf}")]
+        [HttpPost("adicionar-monitoriamento{cpf}")]
         public async Task<ActionResult<LeituraMonitoramentoResponse>> CreateLeituraMonitoramento([FromBody] LeituraMonitoramentoRequest request)
         {
             var response = await _monitoriamentoService.CreateLeituraMonitoramentoAsync(request);
             return Created($"monitoriamento/{request.PacienteCpf}", response);
         }
 
-        [HttpDelete("monitoriamento/{cpf}")]
+        [HttpDelete("excluir-monitoriamento/{cpf}")]
         public async Task<ActionResult> DeleteLeituraMonitoramento(string cpf, DateTime? dataInicial, DateTime? dataFinal)
         {
             await _monitoriamentoService.DeleteLeituraMonitoramentoAsync(cpf, dataInicial, dataFinal);
             return NoContent();
         }
 
-        [HttpPost("monitoriamento/batch/{cpf}")]
+        [HttpPost("adicionar-lote/{cpf}")]
         public async Task<ActionResult> CreateLeituraMonitoramentoBatch(string cpf, string pathCsv)
         {
             var response = await _monitoriamentoService.CreateLeituraMonitoramentoBatchAsync(cpf, pathCsv);

@@ -219,7 +219,6 @@ namespace MonitoramentoSaudeAPI.Services
 
                         if (pacienteExistente != null)
                         {
-                            // Atualiza os dados do paciente existente com os dados do novo registro
                             pacienteExistente.Nome = pacienteRequest.Nome;
                             pacienteExistente.DataNascimento = pacienteRequest.DataNascimento;
                             pacienteExistente.Endereco = pacienteRequest.Endereco;
@@ -229,7 +228,6 @@ namespace MonitoramentoSaudeAPI.Services
                             pacienteExistente.MedicamentosEmUso = pacienteRequest.MedicamentosEmUso;
                             pacienteExistente.Observacoes = pacienteRequest.Observacoes;
 
-                            // Deserializa o JSON dos contatos de emergência
                             var contatosEmergencia = JsonConvert.DeserializeObject<List<ContatoEmergencia>>(pacienteRequest.ContatosEmergencia);
                             pacienteExistente.ContatosEmergencia = contatosEmergencia;
 
@@ -251,7 +249,6 @@ namespace MonitoramentoSaudeAPI.Services
                                 Observacoes = pacienteRequest.Observacoes
                             };
 
-                            // Deserializa o JSON dos contatos de emergência
                             var contatosEmergencia = JsonConvert.DeserializeObject<List<ContatoEmergencia>>(pacienteRequest.ContatosEmergencia);
                             paciente.ContatosEmergencia = contatosEmergencia;
 
