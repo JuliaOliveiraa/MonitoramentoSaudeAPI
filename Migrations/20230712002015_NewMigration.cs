@@ -20,10 +20,10 @@ namespace MonitoramentoSaudeAPI.Migrations
                     DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HistoricoMedico = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MedicamentosEmUso = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Alergias = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    HistoricoMedico = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MedicamentosEmUso = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Alergias = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -51,12 +51,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
 ### PacienteController
 
 #### GetListaPacientes
-- **Endpoint:** GET /pacientes 
+- **Endpoint:** GET /api/Paciente/pacientes 
 - **Descrição:** Retorna uma lista de todos os pacientes cadastrados no sistema.
   <p>Exemplo de solicitação:
 
   ```
-  GET /pacientes
+  GET /api/Paciente/pacientes
   ```
   
   Exemplo de resposta:
@@ -89,13 +89,13 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
 
 #### GetPaciente
-- **Endpoint:** GET /paciente/{cpf}
+- **Endpoint:** GET /api/Paciente/{cpf}
 - **Descrição:** Retorna os detalhes de um paciente específico com base no CPF fornecido.
 
   <p>Exemplo de solicitação:
 
   ```http
-  GET /paciente/12345678900
+  GET /api/Paciente/12345678900
   ```
   
   Exemplo de resposta:
@@ -117,12 +117,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
   
 #### CreatePaciente
-- **Endpoint:** POST /pacientes
+- **Endpoint:** POST /api/Paciente/paciente
 - **Descrição:** Cadastra um novo paciente no sistema.
   <p>Exemplo de solicitação:
 
   ```http
-  POST /pacientes
+  POST /api/Paciente/paciente
   Content-Type: application/json
 
   {
@@ -143,26 +143,25 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```json
   Status: 201 Created
   {
-  "cpf": "12345678900",
-  "nome": "João da Silva",
-  "dataNascimento": "1990-01-01",
-  "endereco": "Rua A, 123",
-  "telefone": "(00) 1234-5678",
-  "alergias": "Nenhuma",
-  "historicoMedico": "Nenhum",
-  "medicamentosEmUso": "Nenhum",
-  "observacoes": ""
+    "cpf": "12345678900",
+    "nome": "João da Silva",
+    "dataNascimento": "1990-01-01",
+    "endereco": "Rua A, 123",
+    "telefone": "(00) 1234-5678",
+    "alergias": "Nenhuma",
+    "historicoMedico": "Nenhum",
+    "medicamentosEmUso": "Nenhum",
+    "observacoes": ""
   }
-
   ```
   
 #### UpdatePaciente
-- **Endpoint:** PUT /paciente/{cpf}
+- **Endpoint:** PUT /api/Paciente/{cpf}
 - **Descrição:** Atualiza os dados de um paciente existente com base no CPF fornecido.
   <p>Exemplo de solicitação:
 
   ```http
-  PUT /paciente/12345678900
+  PUT /api/Paciente/12345678900
   Content-Type: application/json
 
   {
@@ -194,12 +193,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
 
 #### DeletePaciente
-- **Endpoint:** DELETE /paciente/{cpf}
+- **Endpoint:** DELETE /api/Paciente/{cpf}
 - **Descrição:** Exclui um paciente existente com base no CPF fornecido, juntamente com todos os seus contatos de emergência associados.
   <p>Exemplo de solicitação:
 
   ```http
-  DELETE /paciente/12345678900
+  DELETE /api/Paciente/paciente/12345678900
   ```
   Exemplo de resposta:
   ```json
@@ -207,11 +206,11 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
   
 #### CreatePacientesBatch
-- **Endpoint:** POST /pacientes/batch
+- **Endpoint:** POST /api/Paciente/lote
 - **Descrição:** Permite cadastrar vários pacientes de uma vez a partir de um arquivo CSV contendo os dados dos pacientes.
 
   ```http
-  POST /pacientes/batch?pathCsv=/caminho/do/arquivo.csv
+  POST /api/Paciente/pacientes/batch?pathCsv=/caminho/do/arquivo.csv
   ```
   Exemplo de resposta:
   ```json
@@ -223,12 +222,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
 ### ContatoEmergenciaController
 
 #### GetContatosEmergencia
-- **Endpoint:** GET /paciente/{cpf}/contatos-emergencia
+- **Endpoint:** GET /api/ContatoEmergencia/{cpf}
 - **Descrição:** Retorna os contatos de emergência associados a um paciente específico com base no CPF fornecido.
   <p>Exemplo de solicitação:
 
   ```http
-  GET /paciente/12345678900/contatos-emergencia
+  GET /12345678900
   ```
   Exemplo de resposta:
   ```json
@@ -247,12 +246,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   }
   ```
 #### UpdateContatoEmergencia
-- **Endpoint:** PUT /paciente/{cpfPaciente}/contato/{cpfContato}
+- **Endpoint:** PUT /api/ContatoEmergencia/{cpfPaciente}/{cpfContato}
 - **Descrição:** Atualiza os dados de um contato de emergência associado a um paciente específico.
   <p>Exemplo de solicitação:
 
   ```http
-  PUT /paciente/12345678900/contato/98765432100
+  PUT /api/ContatoEmergencia/12345678900/98765432100
   Content-Type: application/json
 
   {
@@ -269,12 +268,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
 
 #### DeleteContatoEmergencia
-- **Endpoint:** DELETE /paciente/{cpfPaciente}/contato/{cpfContato}
+- **Endpoint:** DELETE /api/ContatoEmergencia/{cpfPaciente}/{cpfContato}
 - **Descrição:** Exclui um contato de emergência específico associado a um paciente.
   <p>Exemplo de solicitação:
 
   ```http
-  DELETE /paciente/12345678900/contato/98765432100
+  DELETE /12345678900/98765432100
   ```
   Exemplo de resposta:
   ```json
@@ -282,12 +281,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
 
 #### AddContatoEmergencia
-- **Endpoint:** POST /paciente/{cpfPaciente}/contato
+- **Endpoint:** POST /api/ContatoEmergencia/{cpfPaciente}
 - **Descrição:** Adiciona um novo contato de emergência ao paciente com base no CPF fornecido.
   <p>Exemplo de solicitação:
 
   ```http
-  POST /paciente/12345678900/contato
+  POST /api/ContatoEmergencia/12345678900
   Content-Type: application/json
 
   {
@@ -313,12 +312,12 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
 ### MonitoramentoController
 
 #### GetLeiturasMonitoramento
-- **Endpoint:** GET /monitoriamento/{cpf}
+- **Endpoint:** GET /api/Monitoriamento/{cpf}
 - **Descrição:** Retorna a lista de leituras de monitoramento associadas a um paciente específico com base no CPF fornecido.
   <p>Exemplo de solicitação:
 
   ```http
-  GET /monitoriamento/12345678900
+  GET /12345678900
   ```
   Exemplo de resposta:
   ```json
@@ -350,34 +349,21 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   ```
 
 #### CreateLeituraMonitoramento
-- **Endpoint:** POST /monitoriamento/{cpf}
+- **Endpoint:** POST /api/Monitoriamento/{cpf}
 - **Descrição:** Cria uma nova leitura de monitoramento para um paciente específico com base no CPF fornecido.
   <p>Exemplo de solicitação:
 
   ```http
-  Status: 200 OK
+  POST /api/Monitoriamento/12345678900
+  Content-Type: application/json
   {
-    "pacienteCpf": "12345678900",
-    "leiturasMonitoramento": [
-      {
-        "dataHora": "2023-07-01T08:00:00",
-        "pressaoArterial": "120/80",
-        "batimentosCardiacos": 75,
-        "frequenciaRespiratoria": 16,
-        "saturacaoOxigenio": 98,
-        "nivelCO2": 35,
-        "temperatura": 36.5
-      },
-      {
-        "dataHora": "2023-07-02T09:30:00",
-        "pressaoArterial": "118/82",
-        "batimentosCardiacos": 80,
-        "frequenciaRespiratoria": 18,
-        "saturacaoOxigenio": 97,
-        "nivelCO2": 36,
-        "temperatura": 36.8
-      }
-    ]
+    "dataHora": "2023-07-03T10:15:00",
+    "pressaoArterial": "122/78",
+    "batimentosCardiacos": 70,
+    "frequenciaRespiratoria": 17,
+    "saturacaoOxigenio": 99,
+    "nivelCO2": 34,
+    "temperatura": 36.2
   }
   ```
   Exemplo de resposta:
@@ -394,24 +380,24 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   }
   ```
 #### DeleteLeituraMonitoramento
-- **Endpoint:** DELETE /monitoriamento/{cpf}
+- **Endpoint:** DELETE /api/Monitoriamento/{cpf}
 - **Descrição:** Exclui as leituras de monitoramento de um paciente específico com base no CPF fornecido. As leituras podem ser filtradas por um período de tempo opcional.
   <p>Exemplo de solicitação:
 
   ```http
-  DELETE /monitoriamento/12345678900?dataInicial=2023-07-01&dataFinal=2023-07-02
+  DELETE /api/Monitoriamento/12345678900?dataInicial=2023-07-01&dataFinal=2023-07-02
   ```
   Exemplo de resposta:
   ```json
   Status: 204 No Content
   ```
 #### CreateLeituraMonitoramentoBatch
-- **Endpoint:** POST /monitoriamento/batch/{cpf}
+- **Endpoint:** POST /api/Monitoriamento/lote/{cpf}
 - **Descrição:** Permite adicionar várias leituras de monitoramento de uma vez a partir de um arquivo CSV contendo os dados das leituras.
   <p>Exemplo de solicitação:
 
   ```http
-  POST /monitoriamento/batch/12345678900?pathCsv=/caminho/do/arquivo.csv
+  POST /api/Monitoriamento/lote/12345678900?pathCsv=/caminho/do/arquivo.csv
   ```
   Exemplo de resposta:
   ```json

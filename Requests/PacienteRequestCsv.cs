@@ -20,16 +20,16 @@ public class PacienteRequestCsv
     public string Telefone { get; set; }
 
     [JsonProperty("historicoMedico")]
-    public string HistoricoMedico { get; set; }
+    public string? HistoricoMedico { get; set; }
 
     [JsonProperty("medicamentosEmUso")]
-    public string MedicamentosEmUso { get; set; }
+    public string? MedicamentosEmUso { get; set; }
 
     [JsonProperty("alergias")]
-    public string Alergias { get; set; }
+    public string? Alergias { get; set; }
 
     [JsonProperty("observacoes")]
-    public string Observacoes { get; set; }
+    public string? Observacoes { get; set; }
 
     [JsonProperty("contatosEmergencia")]
     public string? ContatosEmergencia { get; set; }

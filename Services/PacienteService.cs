@@ -67,15 +67,17 @@ namespace MonitoramentoSaudeAPI.Services
                 return null;
             }
 
-            var contatosEmergencia = paciente.ContatosEmergencia
-                .Select(c => new ContatoEmergenciaRequest
+            var contatosEmergencia = paciente.ContatosEmergencia != null
+                ? paciente.ContatosEmergencia.Select(c => new ContatoEmergenciaRequest
                 {
                     Nome = c.Nome,
                     Telefone = c.Telefone,
                     GrauParentesco = c.GrauParentesco,
                     CpfContato = c.CpfContato,
                     Endereco = c.Endereco
-                }).ToList();
+                }).ToList()
+                : new List<ContatoEmergenciaRequest>();
+
 
             var viewModel = new PacienteResponse()
             {
@@ -103,6 +105,17 @@ namespace MonitoramentoSaudeAPI.Services
                 return null;
             }
 
+            var contatosEmergencia = inputModel.ContatosEmergencia != null
+                ? inputModel.ContatosEmergencia.Select(c => new ContatoEmergencia
+                {
+                    Nome = c.Nome,
+                    Telefone = c.Telefone,
+                    GrauParentesco = c.GrauParentesco,
+                    CpfContato = c.CpfContato,
+                    Endereco = c.Endereco
+                }).ToList()
+                : new List<ContatoEmergencia>();
+
             var paciente = new Paciente
             {
                 Cpf = inputModel.Cpf,
@@ -114,14 +127,7 @@ namespace MonitoramentoSaudeAPI.Services
                 HistoricoMedico = inputModel.HistoricoMedico,
                 MedicamentosEmUso = inputModel.MedicamentosEmUso,
                 Observacoes = inputModel.Observacoes,
-                ContatosEmergencia = inputModel.ContatosEmergencia.Select(c => new ContatoEmergencia
-                {
-                    Nome = c.Nome,
-                    Telefone = c.Telefone,
-                    GrauParentesco = c.GrauParentesco,
-                    CpfContato = c.CpfContato,
-                    Endereco = c.Endereco
-                }).ToList()
+                ContatosEmergencia = contatosEmergencia
             };
 
             _context.Pacientes.Add(paciente);
@@ -143,6 +149,7 @@ namespace MonitoramentoSaudeAPI.Services
 
             return viewModel;
         }
+
 
         public async Task<PacienteResponse> UpdatePacienteAsync(string cpf, PacienteRequest inputModel)
         {

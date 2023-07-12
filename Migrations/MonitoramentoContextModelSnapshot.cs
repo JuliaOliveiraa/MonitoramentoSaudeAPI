@@ -100,7 +100,6 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Alergias")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataNascimento")
@@ -111,11 +110,9 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HistoricoMedico")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicamentosEmUso")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -123,7 +120,6 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Observacoes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefone")

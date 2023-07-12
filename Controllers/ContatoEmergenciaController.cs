@@ -27,21 +27,21 @@ namespace MonitoramentoSaudeAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPut("atualizar-contato/{cpfPaciente}/{cpfContato}")]
+        [HttpPut("{cpfPaciente}/{cpfContato}")]
         public async Task<ActionResult> UpdateContatoEmergencia(string cpfPaciente, string cpfContato, [FromBody] ContatoEmergenciaRequest request)
         {
             await _contatoEmergenciaService.UpdateContatoEmergenciaAsync(cpfPaciente, cpfContato, request);
             return NoContent();
         }
 
-        [HttpDelete("deletar-contato/{cpfPaciente}/{cpfContato}")]
+        [HttpDelete("{cpfPaciente}/{cpfContato}")]
         public async Task<ActionResult> DeleteContatoEmergencia(string cpfPaciente, string cpfContato)
         {
             await _contatoEmergenciaService.DeleteContatoEmergenciaAsync(cpfPaciente, cpfContato);
             return NoContent();
         }
 
-        [HttpPost("adicionar-contato/{cpfPaciente}")]
+        [HttpPost("{cpfPaciente}")]
         public async Task<ActionResult> AddContatoEmergencia(string cpfPaciente, [FromBody] ContatoEmergenciaRequest request)
         {
             var response = await _contatoEmergenciaService.AddContatoEmergenciaAsync(cpfPaciente, request);

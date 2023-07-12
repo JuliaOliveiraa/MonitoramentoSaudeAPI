@@ -12,7 +12,7 @@ using MonitoramentoSaudeAPI;
 namespace MonitoramentoSaudeAPI.Migrations
 {
     [DbContext(typeof(MonitoramentoContext))]
-    [Migration("20230710025404_NewMigration")]
+    [Migration("20230712002015_NewMigration")]
     partial class NewMigration
     {
         /// <inheritdoc />
@@ -103,7 +103,6 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Alergias")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataNascimento")
@@ -114,11 +113,9 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HistoricoMedico")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MedicamentosEmUso")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
@@ -126,7 +123,6 @@ namespace MonitoramentoSaudeAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Observacoes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefone")

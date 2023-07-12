@@ -22,21 +22,21 @@ namespace MonitoramentoSaudeAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("adicionar-monitoriamento{cpf}")]
+        [HttpPost("{cpf}")]
         public async Task<ActionResult<LeituraMonitoramentoResponse>> CreateLeituraMonitoramento([FromBody] LeituraMonitoramentoRequest request)
         {
             var response = await _monitoriamentoService.CreateLeituraMonitoramentoAsync(request);
-            return Created($"monitoriamento/{request.PacienteCpf}", response);
+            return Created($"{request.PacienteCpf}", response);
         }
 
-        [HttpDelete("excluir-monitoriamento/{cpf}")]
+        [HttpDelete("{cpf}")]
         public async Task<ActionResult> DeleteLeituraMonitoramento(string cpf, DateTime? dataInicial, DateTime? dataFinal)
         {
             await _monitoriamentoService.DeleteLeituraMonitoramentoAsync(cpf, dataInicial, dataFinal);
             return NoContent();
         }
 
-        [HttpPost("adicionar-lote/{cpf}")]
+        [HttpPost("lote/{cpf}")]
         public async Task<ActionResult> CreateLeituraMonitoramentoBatch(string cpf, string pathCsv)
         {
             var response = await _monitoriamentoService.CreateLeituraMonitoramentoBatchAsync(cpf, pathCsv);
