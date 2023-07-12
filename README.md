@@ -404,3 +404,36 @@ A API utiliza o SQL Server como banco de dados. É necessário configurar uma co
   Status: 200 OK
   "2 dados de monitoramento adicionados com sucesso!"
   ```
+# Dados de Teste
+
+A pasta `CSVs` contém dois arquivos CSV que podem ser utilizados para realizar testes nos endpoints da API:
+
+1. **DadosPacientes.csv**: Este arquivo contém dados fictícios de pacientes. Cada linha representa as informações de um paciente, incluindo CPF, nome, data de nascimento, endereço, telefone, alergias, histórico médico, medicamentos em uso e observações. Esses dados podem ser usados para cadastrar novos pacientes ou atualizar os dados de pacientes existentes.
+
+2. **MonitorSaude.csv**: Este arquivo contém dados fictícios de monitoramento de saúde. Cada linha representa uma leitura de monitoramento associada a um paciente. As informações incluem o CPF do paciente, data e hora da leitura, pressão arterial, batimentos cardíacos, frequência respiratória, saturação de oxigênio, nível de dióxido de carbono e temperatura corporal. Esses dados podem ser utilizados para registrar leituras de monitoramento ou consultar as leituras de um paciente específico.
+
+Para utilizar esses arquivos nos endpoints relevantes, você pode especificar o caminho completo do arquivo CSV como parâmetro nas requisições adequadas. Certifique-se de que os arquivos estejam presentes na pasta `CSVs` do projeto antes de realizar os testes.
+
+Exemplo de uso para cada endpoint:
+
+- **Cadastro de Paciente em Lote (CSV)**:
+  - Endpoint: `POST /api/pacientes/lote`
+  - Parâmetro: `pathCsv` - Caminho completo para o arquivo `DadosPacientes.csv`
+
+- **Registro de Leitura de Monitoramento em Lote (CSV)**:
+  - Endpoint: `POST /api/monitoriamento/lote/{cpf}`
+  - Parâmetros: `cpf` - CPF do paciente associado às leituras de monitoramento
+  - Parâmetro: `pathCsv` - Caminho completo para o arquivo `MonitorSaude.csv`
+
+Certifique-se de fornecer os caminhos corretos para os arquivos CSV ao realizar as requisições.
+
+# Conclusão
+
+A API de Monitoramento de Saúde oferece recursos essenciais para o registro e recuperação de dados vitais de pacientes. Com endpoints para cadastrar pacientes, registrar leituras de monitoramento e consultar as leituras associadas a um paciente, a API permite o acompanhamento e controle adequados da saúde dos pacientes.
+
+Utilizando tecnologias modernas como C#, .NET Core e SQL Server. Os dados são armazenados em um banco de dados relacional, usando o Entity Framework Core como ORM para interagir com o banco de dados.
+
+Além disso, a API disponibiliza arquivos CSV de dados fictícios para facilitar os testes dos endpoints. Os arquivos `DadosPacientes.csv` e `MonitorSaude.csv`, localizados na pasta `CSVs`, podem ser usados para cadastrar pacientes em lote e registrar leituras de monitoramento em lote, respectivamente.
+
+
+
